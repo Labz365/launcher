@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Next Project",
+    "status": "TBA",
+    "eta": null,
+    "description": "Something new is in the works. We will share more when it is ready.",
+    "notes": null
+  },
+  {
+    "name": "Future Work",
+    "status": "TBA",
+    "eta": null,
+    "description": "More to come. Follow the journal for early updates and behind-the-scenes work.",
+    "notes": null
+  }
+]
