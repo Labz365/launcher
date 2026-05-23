@@ -1,1 +1,12 @@
 
+[
+  {
+    "id": 1,
+    "name": "SFMe",
+    "tag": "Mobile App",
+    "platform": "Android",
+    "version": "v1.0.0",
+    "description": "A student budgeting app built in Flutter. Track spending, understand money, stay in control.",
+    "downloadUrl": "https://github.com/labz365/launcher/releases/download/sfme-v1.0.0/SFMe.apk"
+  }
+]
