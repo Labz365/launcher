@@ -1,12 +1,12 @@
-
 [
   {
-    "id": 1,
-    "name": "SFMe",
-    "tag": "Mobile App",
-    "platform": "Android",
+    "id": 2,
+    "name": "Aelix Notes",
+    "tag": "Desktop App",
+    "platform": "Windows",
     "version": "v1.0.0",
-    "description": "A student budgeting app built in Flutter. Track spending, understand money, stay in control.",
-    "downloadUrl": "https://github.com/labz365/launcher/releases/download/sfme-v1.0.0/SFMe.apk"
+    "description": "A quiet little notepad in the Aelix style. One page, autosaved, always where you left it.",
+    "downloadUrl": "https://github.com/Labz365/launcher/releases/download/notes-v1.0.0/AelixNotes.zip",
+    "sha256": "5bae4022785163364f9b29be6538afb7d73a4d213baefe6512a23ef6bb7820f3"
   }
 ]
