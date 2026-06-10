@@ -1,0 +1,12 @@
+# .NET
+bin/
+obj/
+publish/
+*.user
+.vs/
+
+# Inno Setup output
+installer/Output/
+
+# Test results
+TestResults/

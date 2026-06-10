@@ -1,0 +1,16 @@
+[
+  {
+    "key": "snake",
+    "name": "Serpent.",
+    "tag": "C L A S S I C",
+    "description": "The classic, in studio colours. Arrow keys or WASD. Eat, grow, don't fold in on yourself.",
+    "enabled": true
+  },
+  {
+    "key": "reflex",
+    "name": "Reflex.",
+    "tag": "R E A C T I O N",
+    "description": "Thirty seconds, shrinking targets. Click them before they fade. How sharp are you today?",
+    "enabled": true
+  }
+]

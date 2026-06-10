@@ -1,0 +1,394 @@
+<Window x:Class="AelixLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AelixLauncher.ViewModels"
+        Title="Aelix Studio" Height="780" Width="1200" MinHeight="560" MinWidth="900"
+        Icon="pack://application:,,,/Assets/icon.ico"
+        Background="{StaticResource BgBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <!-- fade-up entrance used across sections -->
+        <Storyboard x:Key="FadeUp">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.7">
+                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             From="24" To="0" Duration="0:0:0.7">
+                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="232"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══════════ SIDEBAR ═══════════ -->
+        <Border Grid.Column="0" BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="0,28,0,24">
+                <!-- logo -->
+                <StackPanel DockPanel.Dock="Top" Margin="22,0,22,8">
+                    <TextBlock FontFamily="{StaticResource BodyFont}" FontWeight="SemiBold" FontSize="14">
+                        <Run Foreground="{StaticResource TextBrush}" Text="A E L I X"/><Run Foreground="{StaticResource AccentBrush}" Text="."/>
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource EyebrowDim}" Margin="1,7,0,0" Text="L A U N C H E R"/>
+                </StackPanel>
+
+                <!-- bottom links -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="22,0">
+                    <Border Style="{StaticResource Hairline}" Margin="0,0,0,16"/>
+                    <Button Style="{StaticResource LinkButton}" Content="↻  Refresh catalog"
+                            Command="{Binding RefreshCommand}" Margin="0,0,0,10" HorizontalAlignment="Left"/>
+                    <Button Style="{StaticResource LinkButton}" Content="aelixstudio.com  ↗"
+                            Command="{Binding OpenWebsiteCommand}" Margin="0,0,0,10" HorizontalAlignment="Left"/>
+                    <Button Style="{StaticResource LinkButton}" Content="GitHub · Labz365  ↗"
+                            Command="{Binding OpenRepoCommand}" Margin="0,0,0,16" HorizontalAlignment="Left"/>
+                    <TextBlock Style="{StaticResource MonoMeta}" Text="v1.0.0 — est. 2026"/>
+                    <TextBlock Style="{StaticResource MonoMeta}" Margin="0,6,0,0" TextWrapping="Wrap"
+                               Text="Downloads verified · Labz365 only"/>
+                </StackPanel>
+
+                <!-- nav -->
+                <StackPanel Margin="2,28,0,0">
+                    <Button x:Name="NavLibrary" Style="{StaticResource NavButton}" Tag="selected"
+                            Content="L I B R A R Y" Click="NavLibrary_Click"/>
+                    <Button x:Name="NavArcade" Style="{StaticResource NavButton}"
+                            Content="A R C A D E" Click="NavArcade_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- ═══════════ CONTENT ═══════════ -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- error banner -->
+            <Border Grid.Row="0" BorderBrush="{StaticResource ErrorBrush}" BorderThickness="0,0,0,1"
+                    Background="#22E8A6A6" Padding="40,12"
+                    Visibility="{Binding HasError, Converter={StaticResource BoolToVis}}">
+                <TextBlock Style="{StaticResource BodyText}" Foreground="{StaticResource ErrorBrush}"
+                           Text="{Binding ErrorMessage}"/>
+            </Border>
+
+            <!-- ───────── LIBRARY ───────── -->
+            <ScrollViewer x:Name="LibraryView" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="LibraryContent" Margin="48,0,48,40" RenderTransformOrigin="0.5,0.5">
+                    <StackPanel.RenderTransform><TranslateTransform/></StackPanel.RenderTransform>
+
+                    <!-- HERO -->
+                    <Grid Height="290" ClipToBounds="True">
+                        <!-- drifting geometry, like the site hero -->
+                        <Canvas>
+                            <Ellipse Canvas.Right="40" Canvas.Top="30" Width="190" Height="190"
+                                     Stroke="#40DDD0C4" StrokeThickness="1" RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform><TranslateTransform x:Name="GeoT1"/></Ellipse.RenderTransform>
+                                <Ellipse.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="GeoT1" Storyboard.TargetProperty="Y"
+                                                                 From="0" To="26" Duration="0:0:9" AutoReverse="True"
+                                                                 RepeatBehavior="Forever">
+                                                    <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetName="GeoT1" Storyboard.TargetProperty="X"
+                                                                 From="0" To="-18" Duration="0:0:12" AutoReverse="True"
+                                                                 RepeatBehavior="Forever">
+                                                    <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Ellipse.Triggers>
+                            </Ellipse>
+                            <Rectangle Canvas.Right="190" Canvas.Top="150" Width="84" Height="84"
+                                       Stroke="#2BF2EDE8" StrokeThickness="1" RenderTransformOrigin="0.5,0.5">
+                                <Rectangle.RenderTransform><RotateTransform x:Name="GeoR1"/></Rectangle.RenderTransform>
+                                <Rectangle.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="GeoR1" Storyboard.TargetProperty="Angle"
+                                                                 From="0" To="360" Duration="0:0:36" RepeatBehavior="Forever"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Rectangle.Triggers>
+                            </Rectangle>
+                            <Ellipse Canvas.Right="320" Canvas.Top="60" Width="10" Height="10"
+                                     Fill="#66DDD0C4" RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform><TranslateTransform x:Name="GeoT2"/></Ellipse.RenderTransform>
+                                <Ellipse.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="GeoT2" Storyboard.TargetProperty="Y"
+                                                                 From="0" To="40" Duration="0:0:7" AutoReverse="True"
+                                                                 RepeatBehavior="Forever">
+                                                    <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Ellipse.Triggers>
+                            </Ellipse>
+                        </Canvas>
+
+                        <!-- hero copy, staggered entrance -->
+                        <StackPanel VerticalAlignment="Center" Margin="0,12,0,0">
+                            <TextBlock x:Name="HeroEyebrow" Style="{StaticResource Eyebrow}" Opacity="0"
+                                       Text="C R E A T I V E   S T U D I O   ·   E S T .   2 0 2 6">
+                                <TextBlock.RenderTransform><TranslateTransform Y="24"/></TextBlock.RenderTransform>
+                            </TextBlock>
+                            <TextBlock x:Name="HeroTitleA" Style="{StaticResource DisplayTitle}" FontSize="72"
+                                       Text="AELIX" Margin="-3,16,0,0" Opacity="0" LineHeight="64">
+                                <TextBlock.RenderTransform><TranslateTransform Y="24"/></TextBlock.RenderTransform>
+                            </TextBlock>
+                            <TextBlock x:Name="HeroTitleB" Style="{StaticResource DisplayTitle}" FontSize="58"
+                                       FontStyle="Italic" Foreground="{StaticResource AccentBrush}"
+                                       Text="Library." Margin="-2,0,0,0" Opacity="0">
+                                <TextBlock.RenderTransform><TranslateTransform Y="24"/></TextBlock.RenderTransform>
+                            </TextBlock>
+                            <TextBlock x:Name="HeroDesc" Style="{StaticResource BodyText}" MaxWidth="420" Opacity="0"
+                                       HorizontalAlignment="Left" Margin="0,18,0,0"
+                                       Text="Design &amp; development built for students. Install, update and launch everything we make — from one place.">
+                                <TextBlock.RenderTransform><TranslateTransform Y="24"/></TextBlock.RenderTransform>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                    <Border Style="{StaticResource Hairline}"/>
+
+                    <!-- CURRENT WORK -->
+                    <Grid Margin="0,34,0,6">
+                        <TextBlock Style="{StaticResource Eyebrow}" Text="0 1   —   C U R R E N T   W O R K"/>
+                        <TextBlock Style="{StaticResource MonoMeta}" HorizontalAlignment="Right"
+                                   Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                                   Text="loading…"/>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding Apps}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:AppItemViewModel}">
+                                <!-- editorial work-item row -->
+                                <Border x:Name="row" Background="Transparent"
+                                        BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,0,0,1"
+                                        Padding="6,26">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Style="{StaticResource MonoMeta}"
+                                                   Text="{Binding IndexDisplay}" Margin="0,12,0,0"/>
+
+                                        <StackPanel Grid.Column="1" Margin="0,0,28,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="rowTitle" Style="{StaticResource DisplayTitle}"
+                                                           FontSize="34" Text="{Binding Name}" Margin="0,0,14,0"/>
+                                                <TextBlock x:Name="rowArrow" Text="→" FontSize="18"
+                                                           Foreground="{StaticResource AccentBrush}"
+                                                           VerticalAlignment="Center" Opacity="0" Margin="0,6,0,0"
+                                                           RenderTransformOrigin="0.5,0.5">
+                                                    <TextBlock.RenderTransform><TranslateTransform X="-8"/></TextBlock.RenderTransform>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                                <Border Style="{StaticResource Chip}">
+                                                    <TextBlock Style="{StaticResource ChipText}" Text="{Binding Tag}"/>
+                                                </Border>
+                                                <Border Style="{StaticResource Chip}">
+                                                    <TextBlock Style="{StaticResource ChipText}" Text="{Binding Platform}"/>
+                                                </Border>
+                                                <Border Style="{StaticResource Chip}" BorderBrush="#66DDD0C4"
+                                                        Visibility="{Binding UpdateAvailable, Converter={StaticResource BoolToVis}}">
+                                                    <TextBlock Style="{StaticResource ChipText}"
+                                                               Foreground="{StaticResource AccentBrush}" Text="Update available"/>
+                                                </Border>
+                                                <TextBlock Style="{StaticResource MonoMeta}" Text="{Binding VersionDisplay}"
+                                                           VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                            </StackPanel>
+                                            <TextBlock Style="{StaticResource BodyText}" Text="{Binding Description}"
+                                                       MaxWidth="520" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                                            <TextBlock Style="{StaticResource MonoMeta}" Text="{Binding StatusText}"
+                                                       Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                            <ProgressBar Height="2" Margin="0,12,0,0" MaxWidth="520" HorizontalAlignment="Left"
+                                                         Minimum="0" Maximum="100"
+                                                         Value="{Binding ProgressPercent, Mode=OneWay}"
+                                                         IsIndeterminate="{Binding ProgressIndeterminate}"
+                                                         Foreground="{StaticResource AccentBrush}"
+                                                         Background="#26F2EDE8" BorderThickness="0"
+                                                         Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center" MinWidth="132">
+                                            <Button Style="{StaticResource AccentCta}" Content="{Binding PrimaryActionText}"
+                                                    Command="{Binding PrimaryCommand}" Margin="0,0,0,8"
+                                                    Visibility="{Binding HasDownload, Converter={StaticResource BoolToVis}}"/>
+                                            <Button Style="{StaticResource CtaButton}" Content="LAUNCH"
+                                                    Command="{Binding LaunchCommand}" Margin="0,0,0,8"
+                                                    Visibility="{Binding CanLaunch, Converter={StaticResource BoolToVis}}"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                                        Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}">
+                                                <Button Style="{StaticResource LinkButton}" Content="Folder"
+                                                        Command="{Binding OpenFolderCommand}" Margin="0,0,14,0"/>
+                                                <Button Style="{StaticResource LinkButton}" Content="Remove"
+                                                        Command="{Binding UninstallCommand}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <Trigger SourceName="row" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="row" Property="Background" Value="{StaticResource BgSubtleBrush}"/>
+                                        <Setter TargetName="rowTitle" Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="rowArrow"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1" Duration="0:0:0.25"/>
+                                                    <DoubleAnimation Storyboard.TargetName="rowArrow"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                     To="0" Duration="0:0:0.25">
+                                                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="rowArrow"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="0" Duration="0:0:0.2"/>
+                                                    <DoubleAnimation Storyboard.TargetName="rowArrow"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                     To="-8" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- COMING SOON -->
+                    <TextBlock Style="{StaticResource Eyebrow}" Margin="0,44,0,6"
+                               Text="0 2   —   C O M I N G   S O O N"
+                               Visibility="{Binding HasComingSoon, Converter={StaticResource BoolToVis}}"/>
+                    <ItemsControl ItemsSource="{Binding ComingSoon}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,0,0,1"
+                                        Padding="6,22" Opacity="0.45">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource DisplayTitle}" FontSize="26"
+                                                       Text="{Binding Name}" Margin="0,0,12,0"/>
+                                            <TextBlock Style="{StaticResource MonoMeta}" VerticalAlignment="Center"
+                                                       Text="{Binding Status}"/>
+                                        </StackPanel>
+                                        <TextBlock Style="{StaticResource BodyText}" Text="{Binding Description}"
+                                                   MaxWidth="520" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Style="{StaticResource MonoMeta}" Margin="0,28,0,0" TextWrapping="Wrap"
+                               Text="HTTPS only · github.com/Labz365 allowlist · SHA-256 verified when provided"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ───────── ARCADE ───────── -->
+            <ScrollViewer x:Name="ArcadeView" Grid.Row="1" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel x:Name="ArcadeContent" Margin="48,0,48,40">
+                    <StackPanel.RenderTransform><TranslateTransform/></StackPanel.RenderTransform>
+
+                    <StackPanel Height="218" VerticalAlignment="Top" Margin="0,52,0,0">
+                        <TextBlock Style="{StaticResource Eyebrow}" Text="A E L I X   A R C A D E"/>
+                        <TextBlock Style="{StaticResource DisplayTitle}" FontSize="58" Margin="-2,14,0,0">
+                            <Run Text="Play "/><Run FontStyle="Italic" Foreground="{StaticResource AccentBrush}" Text="something."/>
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource BodyText}" MaxWidth="440" HorizontalAlignment="Left" Margin="0,16,0,0"
+                                   Text="Tiny games built into the launcher while your downloads finish. Open-source, like everything else we make."/>
+                    </StackPanel>
+                    <Border Style="{StaticResource Hairline}" Margin="0,0,0,28"/>
+
+                    <ItemsControl ItemsSource="{Binding Minigames}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:MinigameViewModel}">
+                                <Border x:Name="card" Background="{StaticResource BgBrush}"
+                                        BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1"
+                                        Padding="30" Margin="0,0,14,14" MinHeight="220"
+                                        RenderTransformOrigin="0.5,0.5">
+                                    <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource Eyebrow}" Text="{Binding Tag}"/>
+                                        <TextBlock x:Name="cardTitle" Style="{StaticResource DisplayTitle}"
+                                                   FontSize="32" Text="{Binding Name}" Margin="0,12,0,0"/>
+                                        <TextBlock Style="{StaticResource BodyText}" Text="{Binding Description}"
+                                                   Margin="0,10,0,20"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{StaticResource AccentCta}" Content="P L A Y"
+                                                    Command="{Binding PlayCommand}" Margin="0,0,18,0"/>
+                                            <Button Style="{StaticResource LinkButton}" Content="Source ↗"
+                                                    Command="{Binding OpenSourceCommand}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <Trigger SourceName="card" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="card" Property="Background" Value="{StaticResource BgSubtleBrush}"/>
+                                        <Setter TargetName="cardTitle" Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="card"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                     To="1.015" Duration="0:0:0.2"/>
+                                                    <DoubleAnimation Storyboard.TargetName="card"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                     To="1.015" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="card"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                     To="1" Duration="0:0:0.2"/>
+                                                    <DoubleAnimation Storyboard.TargetName="card"
+                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                     To="1" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Style="{StaticResource MonoMeta}" Margin="0,16,0,0"
+                               Text="Game list can be curated from minigames.json in the catalog repo."/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

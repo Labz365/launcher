@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>AelixLauncher</AssemblyName>
+    <RootNamespace>AelixLauncher</RootNamespace>
+    <Version>1.0.0</Version>
+    <Company>Aelix Studio</Company>
+    <Product>Aelix Studio Launcher</Product>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <!--
+      CODE SIGNING (TODO — no certificate yet):
+      Signing happens post-build on the published EXE / installer, not via MSBuild.
+      See BUILD.md ("Code signing") for the signtool command to run once a
+      certificate (PFX or Azure Trusted Signing) is available.
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AelixLauncher.Core\AelixLauncher.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Brand fonts (optional): drop Cormorant / DM Sans / DM Mono TTFs into
+         Fonts\ and they are embedded automatically; otherwise the theme falls
+         back to system fonts. See Fonts\README.md. -->
+    <Resource Include="Fonts\**\*.ttf" />
+    <Resource Include="Assets\icon.ico" />
+  </ItemGroup>
+
+</Project>
