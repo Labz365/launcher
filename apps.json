@@ -1,12 +1,12 @@
-[
-  {
-    "id": 2,
-    "name": "Aelix Notes",
-    "tag": "Desktop App",
-    "platform": "Windows",
-    "version": "v1.0.0",
-    "description": "A quiet little notepad in the Aelix style. One page, autosaved, always where you left it.",
-    "downloadUrl": "https://github.com/Labz365/launcher/releases/download/notes-v1.0.0/AelixNotes.zip",
-    "sha256": "5bae4022785163364f9b29be6538afb7d73a4d213baefe6512a23ef6bb7820f3"
-  }
+﻿[
+    {
+        "id":  2,
+        "name":  "Aelix Notes",
+        "tag":  "Desktop App",
+        "platform":  "Windows",
+        "version":  "v1.1.0",
+        "description":  "Notebooks, notes, autosave. A quiet little writing space in the Aelix style.",
+        "downloadUrl":  "https://github.com/Labz365/launcher/releases/download/notes-v1.1.0/AelixNotes.zip",
+        "sha256":  "8b74a51596012595552f6a90e9b084875f2d0cbbff1ec28a037ed1681e237be1"
+    }
 ]

@@ -3,7 +3,7 @@
 # Run from the repo root:  .\tools\release-notes.ps1
 
 $ErrorActionPreference = "Stop"
-$version = "v1.0.0"   # bump this (and apps.json "version" + downloadUrl tag) for updates
+$version = "v1.1.0"   # bump this (and apps.json "version" + downloadUrl tag) for updates
 
 # 1. Publish (framework-dependent keeps the zip small; Notes needs .NET 8 Desktop Runtime,
 #    which launcher users already have if the launcher was installed self-contained — to be
