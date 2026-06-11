@@ -40,6 +40,8 @@ public sealed class MinigameViewModel : ViewModelBase
         {
             "snake" => new SnakeWindow(),
             "reflex" => new ReflexWindow(),
+            "pong" => new PongWindow(),
+            "pairs" => new MemoryWindow(),
             _ => null,
         };
         if (game is null) return;

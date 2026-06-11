@@ -8,5 +8,11 @@ publish/
 # Inno Setup output
 installer/Output/
 
+# App release artifacts (uploaded to GitHub Releases, not committed)
+apps/*/publish/
+apps/*/*.zip
+temp-repo/
+website/
+
 # Test results
 TestResults/

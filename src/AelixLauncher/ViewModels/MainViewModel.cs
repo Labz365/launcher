@@ -99,6 +99,12 @@ public sealed class MainViewModel : ViewModelBase
         Minigames.Add(new MinigameViewModel(
             "reflex", "Reflex.", "R E A C T I O N",
             "Thirty seconds, shrinking targets. Click them before they fade. How sharp are you today?"));
+        Minigames.Add(new MinigameViewModel(
+            "pong", "Rally.", "V E R S U S",
+            "First to seven against the house. The angles are yours to choose — the machine never blinks."));
+        Minigames.Add(new MinigameViewModel(
+            "pairs", "Pairs.", "M E M O R Y",
+            "Sixteen cards, eight pairs, one quiet test of recall. Fewer moves, better score."));
     }
 
     /// <summary>Apply optional minigames.json from the repo over the built-in list.</summary>

@@ -12,5 +12,19 @@
     "tag": "R E A C T I O N",
     "description": "Thirty seconds, shrinking targets. Click them before they fade. How sharp are you today?",
     "enabled": true
+  },
+  {
+    "key": "pong",
+    "name": "Rally.",
+    "tag": "V E R S U S",
+    "description": "First to seven against the house. The angles are yours to choose — the machine never blinks.",
+    "enabled": true
+  },
+  {
+    "key": "pairs",
+    "name": "Pairs.",
+    "tag": "M E M O R Y",
+    "description": "Sixteen cards, eight pairs, one quiet test of recall. Fewer moves, better score.",
+    "enabled": true
   }
 ]

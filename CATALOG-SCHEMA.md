@@ -53,13 +53,13 @@ ever re-uploaded, recompute the hash or installs will (correctly) fail.
 ## `minigames.json` (optional — new)
 
 Curates the launcher's built-in **Arcade** from the repo. The games ship inside
-the launcher (current keys: `snake`, `reflex`); this file only overrides their
+the launcher (current keys: `snake`, `reflex`, `pong`, `pairs`); this file only overrides their
 display metadata or disables them. If the file is missing or malformed the
 launcher silently uses its built-in defaults — it is never an error.
 
 | Field | Required | Description |
 |---|---|---|
-| `key` | yes | Built-in game id (`snake`, `reflex`). Unknown keys are ignored. |
+| `key` | yes | Built-in game id (`snake`, `reflex`, `pong`, `pairs`). Unknown keys are ignored. |
 | `name`, `tag`, `description` | no | Display overrides. |
 | `enabled` | no | `false` hides the game (default `true`). |
 | `sourceUrl` | no | "Source" link override — must be on github.com (defaults to this repo). |
