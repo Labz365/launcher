@@ -26,6 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Embedded browser for Aelix Canvas (the built-in GUI IDE).
+         The WebView2 runtime is preinstalled on Win10/11. -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
+  </ItemGroup>
+
+  <!-- Aelix Canvas is NOT bundled: it's an optional module downloaded on demand
+       from a Labz365 GitHub release (see canvas.json + CanvasService). -->
+
+  <ItemGroup>
     <!-- Brand fonts (optional): drop Cormorant / DM Sans / DM Mono TTFs into
          Fonts\ and they are embedded automatically; otherwise the theme falls
          back to system fonts. See Fonts\README.md. -->

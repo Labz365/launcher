@@ -1,14 +1,20 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using AelixLauncher.Core;
+using AelixLauncher.Core.Services;
 using AelixLauncher.ViewModels;
+using Microsoft.Web.WebView2.Core;
 
 namespace AelixLauncher;
 
 public partial class MainWindow : Window
 {
     private readonly MainViewModel _vm = new();
+    private bool _canvasBusy;
+    private bool _canvasLoaded;
 
     public MainWindow()
     {
@@ -22,43 +28,29 @@ public partial class MainWindow : Window
     }
 
     // ── navigation ──
-    private void NavLibrary_Click(object sender, RoutedEventArgs e) => ShowSection(library: true);
-    private void NavArcade_Click(object sender, RoutedEventArgs e) => ShowSection(library: false);
+    private enum Section { Library, Arcade, Canvas }
 
-    private void ShowSection(bool library)
+    private void NavLibrary_Click(object sender, RoutedEventArgs e) => ShowSection(Section.Library);
+    private void NavArcade_Click(object sender, RoutedEventArgs e) => ShowSection(Section.Arcade);
+    private async void NavCanvas_Click(object sender, RoutedEventArgs e)
     {
-        NavLibrary.Tag = library ? "selected" : null;
-        NavArcade.Tag = library ? null : "selected";
-        LibraryView.Visibility = library ? Visibility.Visible : Visibility.Collapsed;
-        ArcadeView.Visibility = library ? Visibility.Collapsed : Visibility.Visible;
+        ShowSection(Section.Canvas);
+        // Already installed? Boot it straight away; otherwise the tab shows the
+        // download offer and nothing is fetched until the user asks for it.
+        if (!_canvasLoaded && CanvasService.InstalledVersion() is not null)
+            await LoadCanvasWebAsync();
+    }
 
-        var panel = library ? (FrameworkElement)LibraryContent : ArcadeContent;
+    private void ShowSection(Section s)
+    {
+        NavLibrary.Tag = s == Section.Library ? "selected" : null;
+        NavArcade.Tag = s == Section.Arcade ? "selected" : null;
+        NavCanvas.Tag = s == Section.Canvas ? "selected" : null;
+        LibraryView.Visibility = s == Section.Library ? Visibility.Visible : Visibility.Collapsed;
+        ArcadeView.Visibility = s == Section.Arcade ? Visibility.Visible : Visibility.Collapsed;
+        CanvasView.Visibility = s == Section.Canvas ? Visibility.Visible : Visibility.Collapsed;
+
+        if (s == Section.Canvas) return; // Canvas hosts its own chrome; no entrance animation
+        var panel = s == Section.Library ? (FrameworkElement)LibraryContent : ArcadeContent;
         if (Resources["FadeUp"] is Storyboard sb)
-            sb.Begin(panel);
-    }
-
-    // ── hero entrance: staggered fade-up, like the site ──
-    private void PlayHeroEntrance()
-    {
-        Stagger(HeroEyebrow, 0.10);
-        Stagger(HeroTitleA, 0.30);
-        Stagger(HeroTitleB, 0.45);
-        Stagger(HeroDesc, 0.70);
-    }
-
-    private static void Stagger(FrameworkElement el, double delaySeconds)
-    {
-        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-        var begin = TimeSpan.FromSeconds(delaySeconds);
-        var duration = TimeSpan.FromSeconds(0.9);
-
-        var fade = new DoubleAnimation(0, 1, duration) { BeginTime = begin, EasingFunction = ease };
-        el.BeginAnimation(OpacityProperty, fade);
-
-        if (el.RenderTransform is TranslateTransform tt)
-        {
-            var rise = new DoubleAnimation(24, 0, duration) { BeginTime = begin, EasingFunction = ease };
-            tt.BeginAnimation(TranslateTransform.YProperty, rise);
-        }
-    }
-}
+            sb.B

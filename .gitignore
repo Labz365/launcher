@@ -16,3 +16,6 @@ website/
 
 # Test results
 TestResults/
+
+# Canvas release zips (attached to GitHub Releases, not committed)
+release-artifacts/

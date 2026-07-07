@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AelixLauncher.ViewModels"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         Title="Aelix Studio" Height="780" Width="1200" MinHeight="560" MinWidth="900"
         Icon="pack://application:,,,/Assets/icon.ico"
         Background="{StaticResource BgBrush}"
@@ -58,6 +59,8 @@
                             Content="L I B R A R Y" Click="NavLibrary_Click"/>
                     <Button x:Name="NavArcade" Style="{StaticResource NavButton}"
                             Content="A R C A D E" Click="NavArcade_Click"/>
+                    <Button x:Name="NavCanvas" Style="{StaticResource NavButton}"
+                            Content="C A N V A S" Click="NavCanvas_Click"/>
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -385,10 +388,4 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <TextBlock Style="{StaticResource MonoMeta}" Margin="0,16,0,0"
-                               Text="Game list can be curated from minigames.json in the catalog repo."/>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
-    </Grid>
-</Window>
+                    <TextBlock

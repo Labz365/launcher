@@ -1,0 +1,94 @@
+/**
+ * Aelix Canvas — single source of theme truth.
+ * Every color / spacing / radius / font value is a CSS variable here.
+ * Neutral dark placeholders; Aelix brand tokens drop in later by editing ONLY
+ * this file. No hardcoded colors anywhere else in the app.
+ */
+:root {
+  /* surfaces */
+  --bg: #161616;
+  --bg-1: #1c1c1e;
+  --bg-2: #232327;
+  --bg-3: #2b2b30;
+  --panel: #18181b;
+  --canvas-bg: #121214;
+
+  /* text */
+  --text: #f2ede8;
+  --text-dim: #a8a29a;
+  --text-faint: #6f6b64;
+
+  /* lines */
+  --hairline: #2f2f34;
+  --hairline-strong: #3c3c43;
+
+  /* accent (placeholder — Aelix purple) */
+  --accent: #7c5cff;
+  --accent-soft: #7c5cff22;
+  --accent-text: #ffffff;
+
+  /* semantic */
+  --danger: #ff5c7c;
+  --ok: #5cffaf;
+  --drop: #7c5cff;
+  --drop-bg: #7c5cff1a;
+
+  /* component-type hues (block tree chips) */
+  --hue-layout: #5c9dff;
+  --hue-input: #5cffaf;
+  --hue-display: #ffcf5c;
+  --hue-logic: #ff8f5c;
+
+  /* spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+
+  /* radii */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+
+  /* typography */
+  --font-ui: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', ui-monospace, 'Cascadia Code', monospace;
+  --font-display: 'Cormorant', Georgia, serif;
+  --fs-1: 11px;
+  --fs-2: 12px;
+  --fs-3: 13px;
+  --fs-4: 15px;
+  --fs-5: 20px;
+
+  /* layout metrics */
+  --rail-w: 240px;
+  --inspector-w: 300px;
+  --code-w: 38%;
+  --topbar-h: 48px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--fs-3);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--hairline-strong); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }

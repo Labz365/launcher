@@ -1,0 +1,19 @@
+[package]
+name = "aelix-canvas"
+version = "0.1.0"
+description = "Aelix Canvas — visual cross-platform UI IDE"
+authors = ["Aelix Studio"]
+edition = "2021"
+rust-version = "1.70"
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.6", features = ["dialog-open", "dialog-save", "dialog-message", "dialog-ask", "path-all", "window-set-title"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+default = ["custom-protocol"]

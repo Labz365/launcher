@@ -20,6 +20,13 @@ public static class LauncherConfig
     public const string WebsiteUrl = "https://www.aelixstudio.com";
 
     /// <summary>
+    /// Manifest for the optional Aelix Canvas module (the built-in GUI IDE).
+    /// 404 ⇒ Canvas is simply not offered. The manifest's download URL goes
+    /// through the same allowlist + SHA-256 pipeline as catalog apps.
+    /// </summary>
+    public const string CanvasManifestUrl = "https://raw.githubusercontent.com/Labz365/launcher/main/canvas.json";
+
+    /// <summary>
     /// Hosts a download may *start* from. The org check applies to these
     /// (the first path segment must equal <see cref="AllowedOrg"/>).
     /// </summary>
@@ -41,14 +48,4 @@ public static class LauncherConfig
         "www.github.com",
         "raw.githubusercontent.com",
         "objects.githubusercontent.com",
-        "release-assets.githubusercontent.com",
-        "github-releases.githubusercontent.com",
-    };
-
-    public static string RootDataDir =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AelixStudio");
-
-    public static string AppsDir => Path.Combine(RootDataDir, "Apps");
-
-    public static string InstalledStateFile => Path.Combine(RootDataDir, "installed.json");
-}
+        "release-assets.githubusercontent.c
