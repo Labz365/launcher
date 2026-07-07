@@ -9,7 +9,7 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>AelixLauncher</AssemblyName>
     <RootNamespace>AelixLauncher</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Company>Aelix Studio</Company>
     <Product>Aelix Studio Launcher</Product>
     <ApplicationIcon>Assets\icon.ico</ApplicationIcon>

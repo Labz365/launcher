@@ -1,0 +1,56 @@
+name: Release Launcher
+
+# Builds the WPF launcher, packages the Inno Setup installer, and publishes a
+# GitHub Release with AelixStudioLauncherSetup.exe attached — all on a Windows
+# runner. Trigger by pushing a tag like `launcher-v1.1.0`.
+#
+#   git tag launcher-v1.1.0
+#   git push origin launcher-v1.1.0
+#
+# No local Windows build required. The website download links point at
+# /releases/download/launcher-vX.Y.Z/AelixStudioLauncherSetup.exe (pinned tag),
+# so bump the tag in the tag name and in the Aelix-Studio site links together.
+
+on:
+  push:
+    tags:
+      - 'launcher-v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build (e.g. launcher-v1.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore & test
+        run: dotnet test AelixLauncher.sln -c Release
+
+      - name: Publish (self-contained, win-x64)
+        run: dotnet publish src/AelixLauncher -c Release -r win-x64 --self-contained true -o publish
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Package installer
+        run: '& "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer\setup.iss'
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: installer/Output/AelixStudioLauncherSetup.exe
+          fail_on_unmatched_files: true
+          generate_release_notes: true

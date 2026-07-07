@@ -102,14 +102,38 @@ commented `SignTool=` line ready to enable.
 
 ## Release checklist
 
-1. Bump `<Version>` in `src/AelixLauncher/AelixLauncher.csproj`.
+### Automated (preferred) — GitHub Actions
+
+`.github/workflows/release-launcher.yml` builds, packages, and publishes the
+release on a Windows runner. No local Windows build needed.
+
+1. Bump `<Version>` in `src/AelixLauncher/AelixLauncher.csproj` **and**
+   `#define MyAppVersion` in `installer/setup.iss` to the new version.
+2. Commit to `main`, then push a matching tag:
+   ```bash
+   git tag launcher-v1.1.0
+   git push origin launcher-v1.1.0
+   ```
+3. CI runs `dotnet test` → `dotnet publish` → `iscc` and creates the release
+   with `AelixStudioLauncherSetup.exe` attached.
+4. Update the download links in the **Aelix-Studio** site repo
+   (`index.html` and `project-launcher.html`) to the new tag:
+   `releases/download/launcher-v1.1.0/AelixStudioLauncherSetup.exe`.
+
+### Manual (fallback) — local Windows build
+
+1. Bump versions (csproj + setup.iss) as above.
 2. `dotnet test` — all green.
-3. `dotnet publish` (above).
+3. `dotnet publish src/AelixLauncher -c Release -r win-x64 --self-contained true -o publish`.
 4. *(TODO once cert exists)* sign `AelixLauncher.exe`.
 5. `iscc installer\setup.iss`.
 6. *(TODO once cert exists)* sign the setup EXE.
-7. Upload the setup EXE to a GitHub Release on `Labz365/launcher`
-   (keep the filename `AelixStudioLauncherSetup.exe`).
-8. The website download button (`website-download-button.html`) points at
-   `releases/latest/download/AelixStudioLauncherSetup.exe`, which always
-   resolves to the newest release — no website change needed per release.
+7. Create a GitHub Release on `Labz365/launcher` tagged `launcher-vX.Y.Z` and
+   upload the setup EXE (keep the filename `AelixStudioLauncherSetup.exe`).
+8. Update the Aelix-Studio site links to the new tag (step 4 above).
+
+> **Do NOT use `releases/latest/download/...` for the launcher.** This repo
+> mixes Launcher, Notes, and Canvas releases, so `latest` resolves to whichever
+> was published most recently (currently Canvas, which has no `.exe`) and the
+> link 404s. Always pin the launcher links to the explicit `launcher-vX.Y.Z`
+> tag. If you want `latest` to work again, move the launcher to its own repo.
