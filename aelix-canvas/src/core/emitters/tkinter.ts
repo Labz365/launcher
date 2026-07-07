@@ -408,4 +408,3 @@ export const tkinterEmitter: Emitter = {
     return [{ path: 'main.py', contents: emitMain(app), language: 'python' }];
   },
 };
-        

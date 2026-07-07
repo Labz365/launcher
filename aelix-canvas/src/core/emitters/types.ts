@@ -27,4 +27,7 @@ export interface Emitter {
   /**
    * Compile an entire app IR into a runnable set of files.
    * The first file in the array is treated as the "primary" file shown in the
-  
+   * live code panel.
+   */
+  emit(app: App): EmittedFile[];
+}

@@ -68,4 +68,36 @@ const MUST_CONTAIN: Record<string, RegExp[]> = {
   flutter: [/MaterialApp\(/],
   html: [/<!DOCTYPE html>/, /addEventListener/, /function updateAll\(\)/],
   swiftui: [/struct AelixApp: App/, /NavigationStack/, /@State /],
-  compose: [/class MainActivity/, /NavHost\(/,
+  compose: [/class MainActivity/, /NavHost\(/, /mutableStateOf/],
+  tkinter: [/import tkinter as tk/, /class App\(tk\.Tk\)/, /def refresh\(self\)/],
+  wpf: [/<UserControl /, /public static class AppState/, /InitializeComponent\(\);/],
+  swing: [/public class Main/, /CardLayout/, /void refresh\(\)/],
+};
+
+for (const target of TARGET_ORDER) {
+  const out = emit(demoApp, target);
+  const primary = out[0];
+  checks.push([`[${target}] emits ${out.length} file(s), primary non-trivial`, out.length > 0 && primary.contents.length > 200]);
+  // Balanced-delimiter check only for brace/paren languages (skip raw HTML/XML files).
+  for (const f of out) {
+    if (f.language === 'html' || f.language === 'xml' || f.language === 'yaml' || f.language === 'text') continue;
+    checks.push([`[${target}] balanced delimiters: ${f.path}`, balanced(f.contents).ok]);
+  }
+  for (const re of MUST_CONTAIN[target] ?? []) {
+    checks.push([`[${target}] matches ${re}`, out.some((f) => re.test(f.contents))]);
+  }
+}
+
+let failed = 0;
+console.log('\nCHECKS');
+for (const [name, ok] of checks) {
+  console.log(`  ${ok ? '✓' : '✗'} ${name}`);
+  if (!ok) failed++;
+}
+console.log('─'.repeat(70));
+if (failed) {
+  console.log(`FAIL — ${failed}/${checks.length} checks failed.`);
+  process.exit(1);
+} else {
+  console.log(`PASS — all ${checks.length} checks passed. Balanced: ${balanced(main.contents).detail}`);
+}

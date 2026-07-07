@@ -27,4 +27,11 @@ export const EMITTERS: Record<TargetLang, Emitter> = {
 export const TARGET_ORDER: TargetLang[] = ['flutter', 'html', 'swiftui', 'compose', 'tkinter', 'wpf', 'swing'];
 
 export function getEmitter(target: TargetLang): Emitter {
-  return EMITTERS[targe
+  return EMITTERS[target];
+}
+
+export function emit(app: App, target: TargetLang): EmittedFile[] {
+  return getEmitter(target).emit(app);
+}
+
+export type { Emitter, EmittedFile, TargetLang };

@@ -165,3 +165,20 @@
 /* state */
 .var-head, .var-row { display: grid; grid-template-columns: 1.2fr .9fr 1.1fr 24px; gap: var(--s-1); align-items: center; }
 .var-hea
+.target-select {
+  margin-left: var(--s-2);
+  background: var(--bg-2); border: 1px solid var(--hairline); color: var(--text);
+  border-radius: var(--r-2); padding: 6px 10px; font-size: var(--fs-2); cursor: pointer;
+}
+.target-select:focus { outline: none; border-color: var(--accent); }
+
+.code-banner {
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: 4px var(--s-3); font-size: var(--fs-1);
+  background: var(--accent-soft); color: var(--text-dim);
+  border-bottom: 1px solid var(--hairline);
+}
+.code-banner b { color: var(--text); font-weight: 600; }
+.code-banner .code-banner-spacer { flex: 1; }
+.code-act { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: var(--fs-1); padding: 3px 6px; border-radius: var(--r-1); }
+.code-act:hover { color: var(--text); background: var(--bg-2); }

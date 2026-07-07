@@ -49,4 +49,85 @@ export function CodePanel() {
 
   const onEdit = (value: string | undefined) => {
     if (!active || value === undefined) return;
-   
+    if (value === active.contents) {
+      // Edited back to exactly the generated output — drop the override.
+      if (override !== undefined) clearOverride(key);
+      return;
+    }
+    setOverride(key, value);
+  };
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(shown);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    } catch { /* clipboard unavailable */ }
+  };
+
+  /** Zip a complete buildable project (emitted files + README/build scaffolding),
+   * honoring any manual edits. */
+  const exportZip = () => {
+    const project = exportProject(app, target).map((f) => ({
+      path: f.path,
+      contents: overrides[overrideKey(target, f.path)] ?? f.contents,
+    }));
+    const name = (app.name || 'aelix-app').replace(/[^a-zA-Z0-9-_]+/g, '-');
+    download(`${name}-${target}.zip`, new Blob([makeZip(project) as BlobPart], { type: 'application/zip' }));
+  };
+
+  return (
+    <section className="code">
+      <div className="code-tabs">
+        {files.map((f) => {
+          const edited = overrides[overrideKey(target, f.path)] !== undefined;
+          return (
+            <button
+              key={f.path}
+              className={`code-tab ${active?.path === f.path ? 'on' : ''}`}
+              title={f.path + (edited ? ' (manually edited)' : '')}
+              onClick={() => setActivePath(f.path)}
+            >
+              {f.path.split('/').pop()}{edited ? ' •' : ''}
+            </button>
+          );
+        })}
+        <span className="code-spacer" />
+        <button className="code-act" onClick={copy} title="Copy current file">{copied ? 'copied ✓' : 'copy'}</button>
+        <button className="code-act" onClick={exportZip} title="Download a complete buildable project (.zip) with build instructions">export project</button>
+        <span className="code-lang">{active?.language}</span>
+      </div>
+
+      {override !== undefined && (
+        <div className="code-banner">
+          <b>Edited by hand</b> — this file no longer tracks the designer.
+          <span className="code-banner-spacer" />
+          <button className="code-act" onClick={() => clearOverride(key)} title="Discard manual edits and resume live generation">
+            ⟲ Regenerate
+          </button>
+        </div>
+      )}
+
+      <div className="code-editor">
+        <Editor
+          height="100%"
+          theme="vs-dark"
+          path={`${target}/${active?.path ?? 'empty'}`}
+          language={active?.language}
+          value={shown}
+          onChange={onEdit}
+          options={{
+            readOnly: false,
+            minimap: { enabled: false },
+            fontSize: 12,
+            fontFamily: 'var(--font-mono)',
+            scrollBeyondLastLine: false,
+            renderWhitespace: 'none',
+            wordWrap: 'off',
+            automaticLayout: true,
+          }}
+        />
+      </div>
+    </section>
+  );
+}

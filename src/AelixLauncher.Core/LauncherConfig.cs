@@ -48,4 +48,17 @@ public static class LauncherConfig
         "www.github.com",
         "raw.githubusercontent.com",
         "objects.githubusercontent.com",
-        "release-assets.githubusercontent.c
+        "release-assets.githubusercontent.com",
+        "github-releases.githubusercontent.com",
+    };
+
+    public static string RootDataDir =>
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AelixStudio");
+
+    public static string AppsDir => Path.Combine(RootDataDir, "Apps");
+
+    /// <summary>Install location of the optional Canvas module.</summary>
+    public static string CanvasDir => Path.Combine(RootDataDir, "Canvas");
+
+    public static string InstalledStateFile => Path.Combine(RootDataDir, "installed.json");
+}

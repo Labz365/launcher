@@ -509,4 +509,3 @@ export const wpfEmitter: Emitter = {
     return files;
   },
 };
-               

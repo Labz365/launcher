@@ -12,4 +12,35 @@ interface UIState {
   showCode: boolean;
   toggleCode(): void;
 
-  /** Manual edits to generated files. The IR stays the sourc
+  /** Manual edits to generated files. The IR stays the source of truth; an
+   * override shadows the generated file until reverted. */
+  codeOverrides: Record<string, string>;
+  setCodeOverride(key: string, contents: string): void;
+  clearCodeOverride(key: string): void;
+  clearAllOverridesForTarget(target: string): void;
+}
+
+export const useUI = create<UIState>((set) => ({
+  canvasMode: 'blocks',
+  setCanvasMode: (m) => set({ canvasMode: m }),
+  showCode: true,
+  toggleCode: () => set((s) => ({ showCode: !s.showCode })),
+
+  codeOverrides: {},
+  setCodeOverride: (key, contents) =>
+    set((s) => ({ codeOverrides: { ...s.codeOverrides, [key]: contents } })),
+  clearCodeOverride: (key) =>
+    set((s) => {
+      const next = { ...s.codeOverrides };
+      delete next[key];
+      return { codeOverrides: next };
+    }),
+  clearAllOverridesForTarget: (target) =>
+    set((s) => {
+      const next: Record<string, string> = {};
+      for (const [k, v] of Object.entries(s.codeOverrides)) {
+        if (!k.startsWith(target + ':')) next[k] = v;
+      }
+      return { codeOverrides: next };
+    }),
+}));

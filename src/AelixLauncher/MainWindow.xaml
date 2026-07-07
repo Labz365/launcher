@@ -388,4 +388,29 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <TextBlock
+                    <TextBlock Style="{StaticResource MonoMeta}" Margin="0,16,0,0"
+                               Text="Game list can be curated from minigames.json in the catalog repo."/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ───────── CANVAS (optional GUI IDE — downloaded on demand) ───────── -->
+            <Grid x:Name="CanvasView" Grid.Row="1" Visibility="Collapsed">
+                <wv2:WebView2 x:Name="CanvasWeb" Visibility="Collapsed"/>
+                <StackPanel x:Name="CanvasFallback" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="560">
+                    <TextBlock Style="{StaticResource Eyebrow}" Text="A E L I X   C A N V A S" HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource DisplayTitle}" FontSize="44" Margin="0,14,0,0" TextAlignment="Center">
+                        <Run Text="Design apps "/><Run FontStyle="Italic" Foreground="{StaticResource AccentBrush}" Text="visually."/>
+                    </TextBlock>
+                    <TextBlock x:Name="CanvasStatus" Style="{StaticResource BodyText}" Margin="0,16,0,0"
+                               TextWrapping="Wrap" TextAlignment="Center"
+                               Text="Drag-and-drop GUI builder that generates real Flutter, web, WPF, and more. Optional module — download it only if you want it."/>
+                    <Button x:Name="CanvasActionBtn" Style="{StaticResource AccentCta}" Margin="0,22,0,0"
+                            HorizontalAlignment="Center" Content="Download Canvas"
+                            Click="CanvasAction_Click"/>
+                    <TextBlock x:Name="CanvasMeta" Style="{StaticResource MonoMeta}" Margin="0,14,0,0"
+                               HorizontalAlignment="Center" Text="~0.4 MB · verified download · Labz365 only"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

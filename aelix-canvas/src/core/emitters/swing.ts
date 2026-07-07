@@ -410,4 +410,3 @@ export const swingEmitter: Emitter = {
     return [{ path: 'Main.java', contents: emitMainJava(app), language: 'java' }];
   },
 };
-        
