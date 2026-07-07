@@ -1,6 +1,6 @@
 /** Component palette — grouped, draggable source items (dnd-kit). */
 import { useDraggable } from '@dnd-kit/core';
-import { PALETTE, GROUP_ORDER, GROUP_HUE, type PaletteItem, type PaletteGroup } from '../catalog';
+import { PALETTE, GROUP_ORDER, GROUP_HUE, GROUP_LABEL, type PaletteItem, type PaletteGroup } from '../catalog';
 
 function PaletteCard({ item }: { item: PaletteItem }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -25,18 +25,18 @@ function PaletteCard({ item }: { item: PaletteItem }) {
 export function Palette() {
   return (
     <aside className="rail">
-      <div className="rail-title">Components</div>
+      <div className="rail-title">Drag onto the canvas</div>
       {GROUP_ORDER.map((group: PaletteGroup) => {
         const items = PALETTE.filter((p) => p.group === group);
         return (
           <div key={group} className="pal-group">
-            <div className="pal-group-h" style={{ color: GROUP_HUE[group] }}>{group}</div>
+            <div className="pal-group-h" style={{ color: GROUP_HUE[group] }}>{GROUP_LABEL[group]}</div>
             {items.length ? (
               <div className="pal-grid">
                 {items.map((it) => <PaletteCard key={it.type} item={it} />)}
               </div>
             ) : (
-              <div className="pal-empty">Declare state &amp; wire events in the State panel →</div>
+              <div className="pal-empty">Declare state &amp; wire events in the State panel</div>
             )}
           </div>
         );

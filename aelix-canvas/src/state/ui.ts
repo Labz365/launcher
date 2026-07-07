@@ -2,7 +2,7 @@
  * and manual code-edit overrides (keyed `${target}:${path}`). */
 import { create } from 'zustand';
 
-export type CanvasMode = 'blocks' | 'preview';
+export type CanvasMode = 'design' | 'blocks' | 'preview';
 
 export const overrideKey = (target: string, path: string) => `${target}:${path}`;
 
@@ -11,9 +11,10 @@ interface UIState {
   setCanvasMode(m: CanvasMode): void;
   showCode: boolean;
   toggleCode(): void;
+  templatePickerOpen: boolean;
+  openTemplatePicker(): void;
+  closeTemplatePicker(): void;
 
-  /** Manual edits to generated files. The IR stays the source of truth; an
-   * override shadows the generated file until reverted. */
   codeOverrides: Record<string, string>;
   setCodeOverride(key: string, contents: string): void;
   clearCodeOverride(key: string): void;
@@ -21,10 +22,13 @@ interface UIState {
 }
 
 export const useUI = create<UIState>((set) => ({
-  canvasMode: 'blocks',
+  canvasMode: 'design',
   setCanvasMode: (m) => set({ canvasMode: m }),
   showCode: true,
   toggleCode: () => set((s) => ({ showCode: !s.showCode })),
+  templatePickerOpen: false,
+  openTemplatePicker: () => set({ templatePickerOpen: true }),
+  closeTemplatePicker: () => set({ templatePickerOpen: false }),
 
   codeOverrides: {},
   setCodeOverride: (key, contents) =>

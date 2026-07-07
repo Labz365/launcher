@@ -31,7 +31,15 @@ export const PALETTE: PaletteItem[] = [
   { type: 'Switch', label: 'Switch', group: 'Input', glyph: '◖', hint: 'Boolean toggle' },
 ];
 
-export const GROUP_ORDER: PaletteGroup[] = ['Layout', 'Display', 'Input', 'Logic/State'];
+export const GROUP_ORDER: PaletteGroup[] = ['Display', 'Input', 'Layout', 'Logic/State'];
+
+/** Friendlier headings shown in the palette. */
+export const GROUP_LABEL: Record<PaletteGroup, string> = {
+  Display: 'Content',
+  Input: 'Inputs',
+  Layout: 'Layout',
+  'Logic/State': 'Data',
+};
 
 export const GROUP_HUE: Record<PaletteGroup, string> = {
   Layout: 'var(--hue-layout)',

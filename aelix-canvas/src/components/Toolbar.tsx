@@ -14,6 +14,7 @@ export function Toolbar() {
   const setCanvasMode = useUI((s) => s.setCanvasMode);
   const showCode = useUI((s) => s.showCode);
   const toggleCode = useUI((s) => s.toggleCode);
+  const openTemplates = useUI((s) => s.openTemplatePicker);
 
   return (
     <header className="topbar">
@@ -21,6 +22,8 @@ export function Toolbar() {
         <span className="brand-dot" />
         Aelix <b>Canvas</b>
       </div>
+
+      <button className="seg-btn solo new-btn" onClick={openTemplates} title="Start from a template">＋ New</button>
 
       <div className="screen-tabs">
         {app.screens.map((s) => (
@@ -37,6 +40,7 @@ export function Toolbar() {
       <span className="topbar-spacer" />
 
       <div className="seg">
+        <button className={`seg-btn ${canvasMode === 'design' ? 'on' : ''}`} onClick={() => setCanvasMode('design')}>Design</button>
         <button className={`seg-btn ${canvasMode === 'blocks' ? 'on' : ''}`} onClick={() => setCanvasMode('blocks')}>Blocks</button>
         <button className={`seg-btn ${canvasMode === 'preview' ? 'on' : ''}`} onClick={() => setCanvasMode('preview')}>Preview</button>
       </div>

@@ -1,8 +1,4 @@
-/**
- * App shell + the single DndContext that wires palette/tree drags into IR
- * mutations. Layout: [palette rail | canvas | live code]. Inspector + state/event
- * editors are added in P3.
- */
+/** App shell + the single DndContext that wires palette/tree drags into IR mutations. */
 import { useEffect, useState } from 'react';
 import {
   DndContext, DragOverlay, PointerSensor, useSensor, useSensors,
@@ -13,13 +9,13 @@ import { Palette } from './components/Palette';
 import { Canvas } from './components/Canvas';
 import { RightPanel } from './components/RightPanel';
 import { CodePanel } from './components/CodePanel';
+import { TemplatePicker } from './components/TemplatePicker';
 import { useUI } from './state/ui';
 import { editorStore } from './state/store';
 import { findWithParent, findComponent, type Component, type ComponentType } from './core/ir';
 
 interface DropTarget { parentId: string; index: number; }
 
-/** Locate a component anywhere in the app. */
 function locate(id: string): { node: Component; parentId: string | null; index: number } | null {
   const { app } = editorStore.getState();
   for (const s of app.screens) {
@@ -49,7 +45,6 @@ export default function App() {
   const [drag, setDrag] = useState<{ kind: 'palette' | 'tree'; label: string } | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
-  // delete selected node with Backspace/Delete (unless typing in a field)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
@@ -85,7 +80,6 @@ export default function App() {
     } else if (a.source === 'tree' && a.id) {
       const loc = locate(a.id);
       if (!loc) return;
-      // cycle guard: can't drop a node into itself or a descendant
       if (findComponent(loc.node, target.parentId)) return;
       editorStore.getState().moveComponent(a.id, target.parentId, target.index);
     }
@@ -106,6 +100,8 @@ export default function App() {
       <DragOverlay dropAnimation={null}>
         {drag ? <div className="drag-chip">{drag.label}</div> : null}
       </DragOverlay>
+
+      <TemplatePicker />
     </DndContext>
   );
 }
