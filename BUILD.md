@@ -104,36 +104,48 @@ commented `SignTool=` line ready to enable.
 
 ### Automated (preferred) — GitHub Actions
 
-`.github/workflows/release-launcher.yml` builds, packages, and publishes the
-release on a Windows runner. No local Windows build needed.
+Two workflows build and publish for you on a tag push (no local build needed):
+
+**Launcher** (`.github/workflows/release-launcher.yml`) — Windows runner, builds
+the WPF app + Inno Setup installer, publishes the release.
 
 1. Bump `<Version>` in `src/AelixLauncher/AelixLauncher.csproj` **and**
-   `#define MyAppVersion` in `installer/setup.iss` to the new version.
-2. Commit to `main`, then push a matching tag:
+   `#define MyAppVersion` in `installer/setup.iss`.
+2. Commit to `main`, then:
    ```bash
    git tag launcher-v1.1.0
    git push origin launcher-v1.1.0
    ```
-3. CI runs `dotnet test` → `dotnet publish` → `iscc` and creates the release
-   with `AelixStudioLauncherSetup.exe` attached.
-4. Update the download links in the **Aelix-Studio** site repo
-   (`index.html` and `project-launcher.html`) to the new tag:
-   `releases/download/launcher-v1.1.0/AelixStudioLauncherSetup.exe`.
+3. CI runs `dotnet test` → `dotnet publish` → `iscc` and creates the release with
+   `AelixStudioLauncherSetup.exe` attached.
+4. Update the download links in the **Aelix-Studio** site repo (`index.html` and
+   `project-launcher.html`) to the new tag.
 
-### Manual (fallback) — local Windows build
+**Canvas** (`.github/workflows/release-canvas.yml`) — Linux runner, builds the web
+app, zips it, publishes the release, and bumps `canvas.json` (version + url +
+sha256) on `main` automatically.
 
-1. Bump versions (csproj + setup.iss) as above.
+1. Commit any `aelix-canvas/` changes to `main`, then:
+   ```bash
+   git tag canvas-v0.2.0
+   git push origin canvas-v0.2.0
+   ```
+2. CI builds `aelix-canvas`, uploads `aelix-canvas-web.zip`, and commits the new
+   `canvas.json` — the launcher's CANVAS tab picks it up on next open.
+
+### Manual (fallback) — local build
+
+1. Bump versions (csproj + setup.iss for launcher; none for canvas).
 2. `dotnet test` — all green.
 3. `dotnet publish src/AelixLauncher -c Release -r win-x64 --self-contained true -o publish`.
 4. *(TODO once cert exists)* sign `AelixLauncher.exe`.
 5. `iscc installer\setup.iss`.
 6. *(TODO once cert exists)* sign the setup EXE.
-7. Create a GitHub Release on `Labz365/launcher` tagged `launcher-vX.Y.Z` and
-   upload the setup EXE (keep the filename `AelixStudioLauncherSetup.exe`).
-8. Update the Aelix-Studio site links to the new tag (step 4 above).
+7. Create a GitHub Release on `Labz365/launcher` tagged `launcher-vX.Y.Z` and upload
+   the setup EXE (keep the filename `AelixStudioLauncherSetup.exe`).
+8. Update the Aelix-Studio site links to the new tag.
 
-> **Do NOT use `releases/latest/download/...` for the launcher.** This repo
-> mixes Launcher, Notes, and Canvas releases, so `latest` resolves to whichever
-> was published most recently (currently Canvas, which has no `.exe`) and the
-> link 404s. Always pin the launcher links to the explicit `launcher-vX.Y.Z`
-> tag. If you want `latest` to work again, move the launcher to its own repo.
+> **Do NOT use `releases/latest/download/...` for the launcher.** This repo mixes
+> Launcher, Notes, and Canvas releases, so `latest` resolves to whichever was
+> published most recently and the link 404s. Always pin launcher links to the
+> explicit `launcher-vX.Y.Z` tag.
